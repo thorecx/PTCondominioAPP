@@ -1,0 +1,32 @@
+﻿@model List<PruebaTecnica.Models.Pago>
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+@Html.ActionLink("Create", "Create", "Pagos") 
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">IdPago</th>
+            <th scope="col">IdCliente</th>
+            <th scope="col">Monto</th>
+            <th scope="col">Fecha de Vencimiento</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var pago in Model)
+        {
+            <tr>
+                <th scope="row">@pago.IdPago</th>
+                <td>@pago.IdCliente</td>
+                <td>@pago.Monto</td>
+                <td>@pago.FechaVencimiento</td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", "Pagos") 
+                    @Html.ActionLink("Delete", "Delete", "Pagos")
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

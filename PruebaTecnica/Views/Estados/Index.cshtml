@@ -1,0 +1,28 @@
+﻿@model List<PruebaTecnica.Models.Estado>
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+@Html.ActionLink("Create", "Create", "Estados") 
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">IdEstado</th>
+            <th scope="col">Desc</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var estado in Model)
+        {
+            <tr>
+                <th scope="row">@estado.IdEstado</th>
+                <td>@estado.Desc</td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", "Estados") 
+                    @Html.ActionLink("Delete", "Delete", "Estados")
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

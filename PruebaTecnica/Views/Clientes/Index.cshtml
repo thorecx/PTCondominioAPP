@@ -1,0 +1,38 @@
+﻿@model List<PruebaTecnica.Models.Cliente>
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+@Html.ActionLink("Create", "Create", "Clientes") 
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th scope="col">IdCliente</th>
+            <th scope="col">IdEstado</th>
+            <th scope="col">Nombre</th>
+            <th scope="col">Apellido</th>
+            <th scope="col">Cedula</th>
+            <th scope="col">Direccion</th>
+            <th scope="col">Telefono</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var cliente in Model)
+        {
+            <tr>
+                <th scope="row">@cliente.IdCliente</th>
+                <td>@cliente.IdEstado</td>
+                <td>@cliente.Nombre</td>
+                <td>@cliente.Apellido</td>
+                <td>@cliente.Cedula</td>
+                <td>@cliente.Direccion</td>
+                <td>@cliente.Telefono</td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", "Clientes", new { id = cliente.IdCliente }, null) 
+                    @Html.ActionLink("Delete", "Delete", "Clientes", new { id = cliente.IdCliente }, null)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

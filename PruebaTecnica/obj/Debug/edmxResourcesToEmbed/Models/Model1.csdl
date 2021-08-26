@@ -1,0 +1,178 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="PruebaTecnicaAPIModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Cliente">
+    <Key>
+      <PropertyRef Name="IdCliente" />
+    </Key>
+    <Property Name="IdCliente" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Nombre" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Apellido" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Cedula" Type="String" MaxLength="13" FixedLength="false" Unicode="true" />
+    <Property Name="Direccion" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="Telefono" Type="String" MaxLength="12" FixedLength="false" Unicode="true" />
+    <Property Name="IdEstado" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Estado" Relationship="Self.FK_Clientes_Estados_IdEstado" FromRole="Clientes" ToRole="Estados" />
+    <NavigationProperty Name="Pagos" Relationship="Self.FK_Pagos_Clientes_ClienteIdCliente" FromRole="Clientes" ToRole="Pagos" />
+  </EntityType>
+  <EntityType Name="Cuota">
+    <Key>
+      <PropertyRef Name="IdCuota" />
+    </Key>
+    <Property Name="IdCuota" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Monto" Type="Double" Nullable="false" />
+    <Property Name="Cantidad" Type="Int32" Nullable="false" />
+    <Property Name="Fecha" Type="DateTime" Nullable="false" Precision="7" />
+    <Property Name="Mora" Type="Double" Nullable="false" />
+    <Property Name="IdPago" Type="Int32" Nullable="false" />
+    <Property Name="IdEstado" Type="Int32" Nullable="false" />
+    <Property Name="MontoTotal" Type="Double" Nullable="false" />
+    <Property Name="EstadoIdEstado" Type="Int32" />
+    <Property Name="PagoIdPago" Type="Int32" />
+    <NavigationProperty Name="Estado" Relationship="Self.FK_Cuotas_Estados_EstadoIdEstado" FromRole="Cuotas" ToRole="Estados" />
+    <NavigationProperty Name="Pago" Relationship="Self.FK_Cuotas_Pagos_PagoIdPago" FromRole="Cuotas" ToRole="Pagos" />
+  </EntityType>
+  <EntityType Name="Estado">
+    <Key>
+      <PropertyRef Name="IdEstado" />
+    </Key>
+    <Property Name="IdEstado" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Desc" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Clientes" Relationship="Self.FK_Clientes_Estados_IdEstado" FromRole="Estados" ToRole="Clientes" />
+    <NavigationProperty Name="Cuotas" Relationship="Self.FK_Cuotas_Estados_EstadoIdEstado" FromRole="Estados" ToRole="Cuotas" />
+    <NavigationProperty Name="Pagos" Relationship="Self.FK_Pagos_Estados_EstadoIdEstado" FromRole="Estados" ToRole="Pagos" />
+    <NavigationProperty Name="Residenciales" Relationship="Self.FK_Residenciales_Estados_EstadoIdEstado" FromRole="Estados" ToRole="Residenciales" />
+  </EntityType>
+  <EntityType Name="Pago">
+    <Key>
+      <PropertyRef Name="IdPago" />
+    </Key>
+    <Property Name="IdPago" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Monto" Type="Double" Nullable="false" />
+    <Property Name="IdCliente" Type="Int32" Nullable="false" />
+    <Property Name="IdEstado" Type="Int32" Nullable="false" />
+    <Property Name="FechaVencimiento" Type="DateTime" Nullable="false" Precision="7" />
+    <Property Name="ClienteIdCliente" Type="Int32" />
+    <Property Name="EstadoIdEstado" Type="Int32" />
+    <NavigationProperty Name="Cliente" Relationship="Self.FK_Pagos_Clientes_ClienteIdCliente" FromRole="Pagos" ToRole="Clientes" />
+    <NavigationProperty Name="Cuotas" Relationship="Self.FK_Cuotas_Pagos_PagoIdPago" FromRole="Pagos" ToRole="Cuotas" />
+    <NavigationProperty Name="Estado" Relationship="Self.FK_Pagos_Estados_EstadoIdEstado" FromRole="Pagos" ToRole="Estados" />
+  </EntityType>
+  <EntityType Name="Residenciale">
+    <Key>
+      <PropertyRef Name="IdResidencial" />
+    </Key>
+    <Property Name="IdResidencial" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Direccion" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="Precio" Type="Double" Nullable="false" />
+    <Property Name="Descripcion" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="IdEstado" Type="Int32" Nullable="false" />
+    <Property Name="EstadoIdEstado" Type="Int32" />
+    <NavigationProperty Name="Estado" Relationship="Self.FK_Residenciales_Estados_EstadoIdEstado" FromRole="Residenciales" ToRole="Estados" />
+  </EntityType>
+  <Association Name="FK_Clientes_Estados_IdEstado">
+    <End Role="Estados" Type="Self.Estado" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Clientes" Type="Self.Cliente" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Estados">
+        <PropertyRef Name="IdEstado" />
+      </Principal>
+      <Dependent Role="Clientes">
+        <PropertyRef Name="IdEstado" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Pagos_Clientes_ClienteIdCliente">
+    <End Role="Clientes" Type="Self.Cliente" Multiplicity="0..1" />
+    <End Role="Pagos" Type="Self.Pago" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Clientes">
+        <PropertyRef Name="IdCliente" />
+      </Principal>
+      <Dependent Role="Pagos">
+        <PropertyRef Name="ClienteIdCliente" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Cuotas_Estados_EstadoIdEstado">
+    <End Role="Estados" Type="Self.Estado" Multiplicity="0..1" />
+    <End Role="Cuotas" Type="Self.Cuota" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Estados">
+        <PropertyRef Name="IdEstado" />
+      </Principal>
+      <Dependent Role="Cuotas">
+        <PropertyRef Name="EstadoIdEstado" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Cuotas_Pagos_PagoIdPago">
+    <End Role="Pagos" Type="Self.Pago" Multiplicity="0..1" />
+    <End Role="Cuotas" Type="Self.Cuota" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Pagos">
+        <PropertyRef Name="IdPago" />
+      </Principal>
+      <Dependent Role="Cuotas">
+        <PropertyRef Name="PagoIdPago" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Pagos_Estados_EstadoIdEstado">
+    <End Role="Estados" Type="Self.Estado" Multiplicity="0..1" />
+    <End Role="Pagos" Type="Self.Pago" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Estados">
+        <PropertyRef Name="IdEstado" />
+      </Principal>
+      <Dependent Role="Pagos">
+        <PropertyRef Name="EstadoIdEstado" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Residenciales_Estados_EstadoIdEstado">
+    <End Role="Estados" Type="Self.Estado" Multiplicity="0..1" />
+    <End Role="Residenciales" Type="Self.Residenciale" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Estados">
+        <PropertyRef Name="IdEstado" />
+      </Principal>
+      <Dependent Role="Residenciales">
+        <PropertyRef Name="EstadoIdEstado" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="PruebaTecnicaAPIEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Clientes" EntityType="Self.Cliente" />
+    <EntitySet Name="Cuotas" EntityType="Self.Cuota" />
+    <EntitySet Name="Estados" EntityType="Self.Estado" />
+    <EntitySet Name="Pagos" EntityType="Self.Pago" />
+    <EntitySet Name="Residenciales" EntityType="Self.Residenciale" />
+    <AssociationSet Name="FK_Clientes_Estados_IdEstado" Association="Self.FK_Clientes_Estados_IdEstado">
+      <End Role="Estados" EntitySet="Estados" />
+      <End Role="Clientes" EntitySet="Clientes" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Pagos_Clientes_ClienteIdCliente" Association="Self.FK_Pagos_Clientes_ClienteIdCliente">
+      <End Role="Clientes" EntitySet="Clientes" />
+      <End Role="Pagos" EntitySet="Pagos" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Cuotas_Estados_EstadoIdEstado" Association="Self.FK_Cuotas_Estados_EstadoIdEstado">
+      <End Role="Estados" EntitySet="Estados" />
+      <End Role="Cuotas" EntitySet="Cuotas" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Cuotas_Pagos_PagoIdPago" Association="Self.FK_Cuotas_Pagos_PagoIdPago">
+      <End Role="Pagos" EntitySet="Pagos" />
+      <End Role="Cuotas" EntitySet="Cuotas" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Pagos_Estados_EstadoIdEstado" Association="Self.FK_Pagos_Estados_EstadoIdEstado">
+      <End Role="Estados" EntitySet="Estados" />
+      <End Role="Pagos" EntitySet="Pagos" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Residenciales_Estados_EstadoIdEstado" Association="Self.FK_Residenciales_Estados_EstadoIdEstado">
+      <End Role="Estados" EntitySet="Estados" />
+      <End Role="Residenciales" EntitySet="Residenciales" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

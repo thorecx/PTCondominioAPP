@@ -1,0 +1,38 @@
+﻿@model List<PruebaTecnica.Models.Cuota>
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+@Html.ActionLink("Create", "Create", "Cuotas") 
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">IdCuota</th>
+            <th scope="col">IdPago</th>
+            <th scope="col">Monto</th>
+            <th scope="col">Cantidad</th>
+            <th scope="col">Mora</th>
+            <th scope="col">Monto Total</th>
+            <th scope="col">Fecha</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var cuota in Model)
+        {
+            <tr>
+                <th scope="row">@cuota.IdCuota</th>
+                <td>@cuota.IdPago</td>
+                <td>@cuota.Monto</td>
+                <td>@cuota.Cantidad</td>
+                <td>@cuota.Mora</td>
+                <td>@cuota.MontoTotal</td>
+                <td>@cuota.Fecha</td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", "Cuotas")
+                    @Html.ActionLink("Delete", "Delete", "Cuotas")
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

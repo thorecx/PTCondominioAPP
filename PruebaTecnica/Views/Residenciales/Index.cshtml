@@ -1,0 +1,35 @@
+﻿@model List<PruebaTecnica.Models.Residenciale>
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+@Html.ActionLink("Create", "Create", "Residenciales") 
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">IdResidencial</th>
+            <th scope="col">Nombre</th>
+            <th scope="col">Direccion</th>
+            <th scope="col">Precio</th>
+            <th scope="col">Descripcion</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var residenciale in Model)
+        {
+            <tr>
+                <th scope="row">@residenciale.IdResidencial</th>
+                <td>@residenciale.IdEstado</td>
+                <td>@residenciale.Nombre</td>
+                <td>@residenciale.Direccion</td>
+                <td>@residenciale.Precio</td>
+                <td>@residenciale.Descripcion</td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", "Residenciales") 
+                    @Html.ActionLink("Delete", "Delete", "Residenciales")
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
